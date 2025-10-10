@@ -246,3 +246,105 @@ How to enhance financial stability to meet the loan criteria in the future.
 Alternative financing options or smaller loans I might qualify for.
 Provide your response in a structured and actionable format to help me take the next steps efficiently.
             """
+            if prompt:
+                st.session_state.message.append({"role":"system","content":prompt})
+            
+            #define gemini function metadata
+
+            tools=genai.protos.Tool(
+                function_declarations=[
+                    genai.protos.FunctionDeclaration(
+                        name='predict_loan_status',
+                        description="Predicts loan approval status based on usert-provided details.",
+                        paramater=genai.protos.schema(
+                            type=genai.protos.Type.OBJECT,
+                        properties={
+                            "gender":genai.protos.Schema(type=genai.protos.Type.STRING),
+                            "married":genai.protos.Schema(type=genai.protos.Type.STRING),
+                            "dependents":genai.protos.Schema(type=genai.protos.Type.STRING),
+                            "education":genai.protos.Schema(type=genai.protos.Type.STRING),
+                            "self_employed":genai.protos.Schema(type=genai.protos.Type.STRING),
+                            "applicant_income":genai.protos.Schema(type=genai.protos.Type.NUMBER),
+                            "coapplicant_income":genai.protos.Schema(type=genai.protos.Type.NUMBER),
+                            "loan_amount":genai.protos.Schema(type=genai.protos.Type.NUMBER),
+                            "loan_amount_term":genai.protos.Schema(type=genai.protos.Type.NUMBER),
+                            "credit_history":genai.protos.Schema(type=genai.protos.Type.NUMBER),
+                            "property_area":genai.protos.Schema(type=genai.protos.Type.STRING),  
+                        },
+                        required=["gender","married","education","applicant_income","loan_amount","loan_amount_term","credit_history","property_area"]
+                        )
+                    )
+                ]
+            )
+            with st.chat_message("assistant"):
+                with st.spinner("Thinking..."):
+                    try:
+                        #create the model and start the chat
+                        model =genai.GenerativeModel(model_name='gemin-1.5-flash',tools=[tools])
+                        chat=model.start_chat(enable_automatic_function_calling=True)
+                        response=chat.send_message(prompt)
+
+                        #Log the raw responses for debugging purposes (optional)
+                         
+                        args=""
+                        for part in response.parts:
+                            if fn := part.function_call:
+                                args= ",".join(f"{key}={val}" for key,val in fn.args.items())
+                                print(args)
+                            
+                        #initialize the variables
+                        loan_amount_term = 0.0
+                        coapplicant_income = 0.0
+                        applicant_income = 0.0
+                        married = ''
+                        education = ''
+                        property_area = ''
+                        self_employed = ''
+                        gender = ''
+                        loan_amount = 0.0
+                        dependents = 0
+                        credit_history = 0.0
+                        function_name  = ''
+                        # parse the function call arguments and assign them to appropriate variables
+                        for part in response.parts:
+                            if fn := part.function_call:
+                                function_name = fn.name
+                                for key,val in fn.args.items():
+                                    if key == 'loan_amount_term':
+                                        loan_amount_term=float(val)
+                                    elif key == 'coapplicant_income':
+                                        coapplicant_income=float(val)
+                                    elif key == 'applicant_income':
+                                        applicant_income=float(val)
+                                    elif key == 'married':
+                                        married = val
+                                    elif key == 'education':
+                                        education = val
+                                    elif key == 'property_area':
+                                        property_area = val
+                                    elif key == 'self_employed':
+                                        self_employed = val
+                                    elif key == 'gender':
+                                        gender = val
+                                    elif key == 'loan_amount':
+                                        loan_amount = float(val)
+                                    elif key == 'dependents':
+                                        dependents = int(val)
+                                    elif key == 'credit_history':
+                                        credit_history = float(val)
+                        features =preprocess_data(gender, married, dependents, education, self_employed, credit_history, property_area, 
+                   applicant_income, coapplicant_income, loan_amount, loan_amount_term)
+                        model_predicted = load_model()
+                        predicition = model_predicted.predict([features])
+
+                        if predicition == 'Y':
+                            predicition = 'Eligible for loan'
+                            st.balloons()
+                            st.markdown("###🎉 Congratulations ! Your loan application is likely approved!")
+                        else:
+                            predicition = 'Not Eligible for loan'
+                            st.markdown("###😭Danger! your loan application has been ***rejected***")
+
+
+
+                            

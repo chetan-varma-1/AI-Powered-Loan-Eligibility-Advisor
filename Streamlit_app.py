@@ -57,5 +57,20 @@ def about_us_page():
     #prokect acitivity image
     st.image("Project Acitivity.png",caption= "Project Activity Diagram")
 
+#streamlit layout for Prediction page
+
+def prediction_page():
+    st.title("🚀Loan Adivisor System")
+    st.markdown("### 📋Enter Loan Application Details to Predict Your Loan Status")\
+    
+    #user input fields for prediction
+    gender = st.selectbox("👤Gender",["Male","Female"])
+    married= st.selectbox("💍Marital Status",["Yes","No"])
+    dependents= st.selectbox("👥 Dependents",["0","1","2","3+"])
+    
+
+
+
+
 
     

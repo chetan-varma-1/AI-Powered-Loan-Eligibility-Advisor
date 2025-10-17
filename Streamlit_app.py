@@ -67,6 +67,23 @@ def prediction_page():
     gender = st.selectbox("👤Gender",["Male","Female"])
     married= st.selectbox("💍Marital Status",["Yes","No"])
     dependents= st.selectbox("👥 Dependents",["0","1","2","3+"])
+    education =st.selectbox("🎓Education",["Graduate","Not Graduate"])
+    credit = st.slider("📊Credit Score",min_value=300,max_value=850,step=1,value=750)
+    area = st.selectbox("🏠Property Area",["Ubran","Semiurban","Rural"])
+    ApplicantIncome = st.slider("💰Applicant Income",min_value=1000,max_value=100000,step=1000,value=5000)
+    CoapplicantIncome = st.slider("🤝Coapplicant Income",min_value=0,max_value=100000,step=1000,value=0)
+    LoanAmount = st.slider("🏡Loan Amount",min_value=1,max_value=100000,step=10,value=100)
+    Loan_Amount_Term =st.select_slider("🗓️Loan Amount Term(in days)",options=[360,180,240,120],value=360)
+    
+    #preprocess input data and make predictions
+    def process_data(gender,married,dependents,education,credit,area,ApplicantIncome,CoapplicantIncome,LoanAmount,Loan_Amount_Term):
+        male = 1 if gender == "Male" else 0
+        married_yes = 1 if married == "Yes" else 0
+        if dependents == '1':
+            dependents_1,dependents_2,dependents_3 = 1,0,0
+
+
+
     
 
 

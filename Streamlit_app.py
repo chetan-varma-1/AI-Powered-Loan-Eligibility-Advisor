@@ -54,7 +54,8 @@ def about_us_page():
         2. **Data Cleaning**: Handled missing values, outliers, and transformed categorical data to ensure compatibility with machine learning algorithms.
         3. **Model Selection**: Experimented with various machine learning algorithms such as **Logistic Regression**, **Random Forest**, and **XGBoost** to find the best-performing model.
         4. **Model Training & Optimization**: Trained the model on historical data, fine-tuned hyperparameters, and evaluated performance metrics like **accuracy**, **precision**, and **recall**.
-        5. **Deployment & Testing**: Deployed the trained model into the Streamlit application, tested the prediction system with real user inputs, and optimized its performance.
+        5. **Deployment & Testing**: Deployed 
+        the trained model into the Streamlit application, tested the prediction system with real user inputs, and optimized its performance.
 
         This project has provided me with hands-on experience in **data preprocessing**, **model training**, and **AI deployment**, which are essential skills for any AI professional.
     """)

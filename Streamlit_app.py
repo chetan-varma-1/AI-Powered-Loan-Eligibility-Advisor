@@ -103,7 +103,7 @@ def prediction_page():
         totalincomelog = np.log(ApplicantIncome + CoapplicantIncome)
         LoanAmountlog = np.log(LoanAmount)
         Loan_Amount_Termlog = np.log(Loan_Amount_Term)
-        if credit < 1000 and credit >= 800:
+        if credit <= 1000 and credit >= 800:
             credit = 1
         else :
             credit = 0

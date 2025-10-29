@@ -6,7 +6,7 @@ import pickle
 import joblib
 from sklearn.tree import DecisionTreeClassifier
 
-genai.configure(api_key='AIzaSyDTFOeHKJHBwoyXd5sYfFyVwHvFWjuau58')
+genai.configure(api_key='AIzaSyA_tTbL5excWnfC3d56IbTOr0CgpKXM5JY')
 
 def initialize_session_state():
     if "messages" not in st.session_state:
@@ -49,7 +49,7 @@ def preprocess_data(gender, married, dependents, education, employed, credit, ar
         totalincomelog = np.log(float(ApplicantIncome) + float(CoapplicantIncome))
         LoanAmountlog = np.log(float(LoanAmount))
         Loan_Amount_Termlog = np.log(float(Loan_Amount_Term))
-        if float(credit) <= 1000 and float(credit) >= 800:
+        if float(credit) >= 800 and float(credit) <= 1000:
             credit = 1
         else:
             credit = 0
@@ -82,7 +82,7 @@ def show_chatbot():
         "What is your monthly applicant income?",
         "What is your monthly co-applicant income?",
         "What is the loan amount you are requesting?",
-        "What is the loan term in months?",
+        "What is the loan term in days?",
         "What is your credit history score? (300-850)",
         "What is the area ? (Urban/Semiurban/Rural)"
     ]
